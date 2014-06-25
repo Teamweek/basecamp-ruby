@@ -7,12 +7,7 @@ module Basecamp
     # @param basecamp_id: Basecamp account id
     def initialize(client, basecamp_id = nil)
       @client = client
-      base_uri = if basecamp_id
-        "https://basecamp.com/#{basecamp_id}/api/v1"
-      else
-        "https://launchpad.37signals.com"
-      end
-      @client.base_uri(base_uri)
+      @client.base_uri(base_uri(basecamp_id))
     end
 
     # get Basecamp accounts from launchpad.37signals.com API for the user
@@ -41,6 +36,16 @@ module Basecamp
     def people
       request = client.get "/people.json"
       request.parsed_response.map { |h| Basecamp::Person.new(h) }
+    end
+
+    private
+
+    def base_uri(basecamp_id = nil)
+      if basecamp_id
+        "https://basecamp.com/#{basecamp_id}/api/v1"
+      else
+        "https://launchpad.37signals.com"
+      end
     end
   end
 end
