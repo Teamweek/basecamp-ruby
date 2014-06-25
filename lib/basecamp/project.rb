@@ -1,6 +1,6 @@
-module Basecamper
+module Basecamp
   class Project
-    include Basecamper::HashConstructed
+    include Basecamp::HashConstructed
 
     attr_accessor :id
     attr_accessor :name

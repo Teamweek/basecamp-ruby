@@ -1,7 +1,7 @@
-module Basecamper
+module Basecamp
   class Client
     attr_accessor :client
-    # Initializes the Basecamper client
+    # Initializes the Basecamp client
     #
     # @param client: a http_client
     # @param basecamp_id: Basecamp account id
@@ -12,18 +12,18 @@ module Basecamper
 
     # get projects from Basecamp API
     #
-    # @return [Array<Basecamper::Project>] array of {Basecamper::Project} instances
+    # @return [Array<Basecamp::Project>] array of {Basecamp::Project} instances
     def projects
       response = client.get '/projects.json'
-      request.parsed_response.map { |h| Basecamper::Project.new(h) }
+      request.parsed_response.map { |h| Basecamp::Project.new(h) }
     end
 
     # get users from Basecamp API
     #
-    # @return [Array<Basecamper::Person>] array of {Basecamper::Person} instances
+    # @return [Array<Basecamp::Person>] array of {Basecamp::Person} instances
     def people
       response = self.class.get "/people.json"
-      request.parsed_response.map { |h| Basecamper::Person.new(h) }
+      request.parsed_response.map { |h| Basecamp::Person.new(h) }
     end
   end
 end

@@ -1,4 +1,4 @@
-module Basecamper
+module Basecamp
   module HashConstructed
     # @param [Hash] h hash containing key-value pairs to map to object instance variables
     def initialize(h)
