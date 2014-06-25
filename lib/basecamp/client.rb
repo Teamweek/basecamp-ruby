@@ -5,9 +5,26 @@ module Basecamp
     #
     # @param client: a http_client
     # @param basecamp_id: Basecamp account id
-    def initialize(client, basecamp_id)
+    def initialize(client, basecamp_id = nil)
       @client = client
-      @client.base_uri "https://basecamp.com/#{basecamp_id}/api/v1"
+      base_uri = if basecamp_id
+        "https://basecamp.com/#{basecamp_id}/api/v1"
+      else
+        "https://launchpad.37signals.com"
+      end
+      @client.base_uri(base_uri)
+    end
+
+    # get Basecamp accounts from launchpad.37signals.com API for the user
+    #
+    # @return [Array<Basecamp::Account>] array of {Basecamp::Account} instances
+    def accounts
+      request = client.get '/authorization.json'
+      request.parsed_response["accounts"].map { |h|
+        if h["product"] == "bcx"
+          Basecamp::Account.new(h)
+        end
+      }.compact
     end
 
     # get projects from Basecamp API
