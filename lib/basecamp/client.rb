@@ -14,7 +14,7 @@ module Basecamp
     #
     # @return [Array<Basecamp::Project>] array of {Basecamp::Project} instances
     def projects
-      response = client.get '/projects.json'
+      request = client.get '/projects.json'
       request.parsed_response.map { |h| Basecamp::Project.new(h) }
     end
 
@@ -22,7 +22,7 @@ module Basecamp
     #
     # @return [Array<Basecamp::Person>] array of {Basecamp::Person} instances
     def people
-      response = client.get "/people.json"
+      request = client.get "/people.json"
       request.parsed_response.map { |h| Basecamp::Person.new(h) }
     end
   end
