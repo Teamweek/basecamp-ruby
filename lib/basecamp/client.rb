@@ -12,8 +12,8 @@ module Basecamp
     # get Basecamp accounts from launchpad.37signals.com API for the user
     # @return [Array<Basecamp::Account>] array of {Basecamp::Account} instances
     def accounts
-      request = client.get '/authorization.json'
-      request.parsed_response["accounts"].map { |h|
+      response = client.get '/authorization.json'
+      response["accounts"].map { |h|
         if h["product"] == "bcx"
           Basecamp::Account.new(h)
         end
@@ -32,11 +32,17 @@ module Basecamp
       get_objects("/people.json", Basecamp::Person)
     end
 
+    # get todolists from Basecamp API
+    # @return [Array<Basecamp::Todolist>] array of {Basecamp::Todolist} instances
+    def todolists
+      get_objects("/todolists.json", Basecamp::Todolist)
+    end
+
     private
 
     def get_objects(uri, context)
-      request = client.get(uri)
-      request.parsed_response.map { |h| context.new(h) }
+      response = client.get(uri)
+      response.map { |h| context.new(h) }
     end
 
     def base_uri(basecamp_id = nil)
