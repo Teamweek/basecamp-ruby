@@ -2,7 +2,6 @@ module Basecamp
   class Client
     attr_accessor :client
     # Initializes the Basecamp client
-    #
     # @param client: a http_client
     # @param basecamp_id: Basecamp account id
     def initialize(client, basecamp_id = nil)
@@ -11,7 +10,6 @@ module Basecamp
     end
 
     # get Basecamp accounts from launchpad.37signals.com API for the user
-    #
     # @return [Array<Basecamp::Account>] array of {Basecamp::Account} instances
     def accounts
       request = client.get '/authorization.json'
@@ -23,22 +21,23 @@ module Basecamp
     end
 
     # get projects from Basecamp API
-    #
     # @return [Array<Basecamp::Project>] array of {Basecamp::Project} instances
     def projects
-      request = client.get '/projects.json'
-      request.parsed_response.map { |h| Basecamp::Project.new(h) }
+      get_objects("/projects.json", Basecamp::Project)
     end
 
     # get users from Basecamp API
-    #
     # @return [Array<Basecamp::Person>] array of {Basecamp::Person} instances
     def people
-      request = client.get "/people.json"
-      request.parsed_response.map { |h| Basecamp::Person.new(h) }
+      get_objects("/people.json", Basecamp::Person)
     end
 
     private
+
+    def get_objects(uri, context)
+      request = client.get(uri)
+      request.parsed_response.map { |h| context.new(h) }
+    end
 
     def base_uri(basecamp_id = nil)
       if basecamp_id
