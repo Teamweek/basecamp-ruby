@@ -19,7 +19,7 @@ module Basecamp
     end
 
     def assigned_todos
-      raw_response['assigned_todos'].map do |h|
+      raw_data['assigned_todos'].map do |h|
         Basecamp::Todo.new(h.merge('project_id' => project_id))
       end
     end
