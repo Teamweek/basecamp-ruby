@@ -1,6 +1,8 @@
+require 'basecamp/request_helper'
 require 'basecamp/client'
 require 'basecamp/hash_constructed'
 require 'basecamp/person'
 require 'basecamp/project'
 require 'basecamp/account'
 require 'basecamp/todolist'
+require 'basecamp/todo'

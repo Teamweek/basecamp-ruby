@@ -13,5 +13,4 @@ unified error and access handling.
 
 The HTTP client is responsible for authorization, user agent and HTTP caching headers.
 The HTTP client that is passed to the Basecamp::Client must implement the following methods, that this gem uses:
-  * ```base_uri(path)``` - sets the base uri for the requests
   * ```get(uri)``` - HTTP GET request, which returns the response body as JSON

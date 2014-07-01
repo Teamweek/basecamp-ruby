@@ -9,15 +9,11 @@ class ExampleClient
   end
 
   def get(path)
-    handle_response(HTTParty.get("#{@site}#{path}", options))
+    handle_response(HTTParty.get(path, options))
   end
 
   def options
     {basic_auth: @auth, headers: {"User-Agent"  => USER_AGENT}}
-  end
-
-  def base_uri(site)
-    @site = site
   end
 
   def handle_response(request)

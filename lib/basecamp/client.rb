@@ -1,18 +1,20 @@
 module Basecamp
   class Client
+    include Basecamp::RequestHelper
     attr_accessor :client
+    attr_accessor :basecamp_id
     # Initializes the Basecamp client
-    # @param client: a http_client
+    # @param client: a http client
     # @param basecamp_id: Basecamp account id
     def initialize(client, basecamp_id = nil)
       @client = client
-      @client.base_uri(base_uri(basecamp_id))
+      @basecamp_id = basecamp_id
     end
 
     # get Basecamp accounts from launchpad.37signals.com API for the user
     # @return [Array<Basecamp::Account>] array of {Basecamp::Account} instances
     def accounts
-      response = client.get '/authorization.json'
+      response = client.get('https://launchpad.37signals.com/authorization.json')
       response["accounts"].map { |h|
         if h["product"] == "bcx"
           Basecamp::Account.new(h)
@@ -32,25 +34,23 @@ module Basecamp
       get_objects("/people.json", Basecamp::Person)
     end
 
-    # get todolists from Basecamp API
+    # get active todolists for all projects from Basecamp API
     # @return [Array<Basecamp::Todolist>] array of {Basecamp::Todolist} instances
-    def todolists
+    def active_todolists
       get_objects("/todolists.json", Basecamp::Todolist)
     end
 
-    private
-
-    def get_objects(uri, context)
-      response = client.get(uri)
-      response.map { |h| context.new(h) }
+    # get completed todolists for all projects from Basecamp API
+    # @return [Array<Basecamp::Todolist>] array of {Basecamp::Todolist} instances
+    def completed_todolists
+      get_objects("/todolists/completed.json", Basecamp::Todolist)
     end
 
-    def base_uri(basecamp_id = nil)
-      if basecamp_id
-        "https://basecamp.com/#{basecamp_id}/api/v1"
-      else
-        "https://launchpad.37signals.com"
-      end
+    # get assigned todos for person from Basecamp API
+    # @return [Array<Basecamp::Todo>] array of {Basecamp::Todo} instances
+    def assigned_todos(person_id)
+      todolists = get_objects("/people/#{person_id}/assigned_todos.json", Basecamp::Todolist)
+      todolists.collect { |list| list.assigned_todos }
     end
   end
 end
