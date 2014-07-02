@@ -1,5 +1,6 @@
 basecamp-ruby
 ========
+[![Code Climate](https://codeclimate.com/github/Teamweek/basecamp-ruby.png)](https://codeclimate.com/github/Teamweek/basecamp-ruby)
 
 A very lightweight ruby library without an http client for using Basecamp API
 
