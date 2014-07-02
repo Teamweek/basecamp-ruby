@@ -50,7 +50,7 @@ module Basecamp
     # @return [Array<Basecamp::Todo>] array of {Basecamp::Todo} instances
     def assigned_todos(person_id)
       todolists = get_objects("/people/#{person_id}/assigned_todos.json", Basecamp::Todolist)
-      todolists.collect { |list| list.assigned_todos }
+      todolists.collect{ |list| list.assigned_todos }.flatten
     end
   end
 end
