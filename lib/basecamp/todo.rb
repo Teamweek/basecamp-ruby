@@ -12,7 +12,7 @@ module Basecamp
     attr_accessor :due_at
     attr_accessor :position
 
-    def assignee(attrs)
+    def assignee=(attrs)
       @assignee_id = attrs['id'] if attrs['type'] == 'Person'
     end
   end
