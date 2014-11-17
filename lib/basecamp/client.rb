@@ -47,9 +47,13 @@ module Basecamp
     end
 
     # get assigned todos for person from Basecamp API
+    # @param person_id: basecamp id of the person, whose assigned todos are requested
+    # @param due_since: date in iso8601 format, will request all the todos due after the date specified
     # @return [Array<Basecamp::Todo>] array of {Basecamp::Todo} instances
-    def assigned_todos(person_id)
-      todolists = get_objects("/people/#{person_id}/assigned_todos.json", Basecamp::Todolist)
+    def assigned_todos(person_id, due_since = nil)
+      uri = "/people/#{person_id}/assigned_todos.json"
+      uri += "?due_since=#{due_since}" if due_since
+      todolists = get_objects(uri, Basecamp::Todolist)
       todolists.collect{ |list| list.assigned_todos }.flatten
     end
   end
